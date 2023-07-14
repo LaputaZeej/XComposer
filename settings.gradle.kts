@@ -1,10 +1,12 @@
-rootProject.name = "MyApplication"
+rootProject.name = "XComposer"
 
 include(":androidApp")
 include(":shared")
 include(":desktopApp")
 
 pluginManagement {
+
+
     repositories {
         gradlePluginPortal()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
@@ -16,6 +18,9 @@ pluginManagement {
         val agpVersion = extra["agp.version"] as String
         val composeVersion = extra["compose.version"] as String
 
+
+
+
         kotlin("jvm").version(kotlinVersion)
         kotlin("multiplatform").version(kotlinVersion)
         kotlin("android").version(kotlinVersion)
@@ -24,6 +29,8 @@ pluginManagement {
         id("com.android.library").version(agpVersion)
 
         id("org.jetbrains.compose").version(composeVersion)
+
+        kotlin("plugin.serialization") version(kotlinVersion)
     }
 }
 
