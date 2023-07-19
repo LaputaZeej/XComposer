@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">孪生APP</string>
+    <string name="app_virtual_device">虚拟设备</string>
+
+    <string name="device_cid">通信ID</string>
+    <string name="device_type">设备型号</string>
+
+
+    <string-array name="tasks">
+        <item>Buy milk</item>
+        <item>Choose curtain</item>
+        <item>Plant rosemary</item>
+        <item>Finish the essay</item>
+        <item>Receive new packages</item>
+        <item>Take a photo</item>
+    </string-array>
+    <string name="topics">Topics</string>
+    <string name="tab_properties">属性</string>
+    <string name="tab_services">服务</string>
+    <string name="tab_events">事件</string>
+
+    <string name="event_type_alert">alert</string>
+    <string name="event_type_info">info</string>
+    <string name="event_type_fault">fault</string>
+
+    <string name="menu_config_wifi">进入配网模式</string>
+    <string name="menu_setting">配置</string>
+    <string name="menu_logger">通信日志</string>
+    <string name="menu_update_tsl">检查更新物模型</string>
+
+    <string-array name="topics">
+        <item>2 new packages arrived</item>
+        <item>DIY project recommendation</item>
+        <item>Festival next month</item>
+        <item>New flower seeds available</item>
+    </string-array>
+
+    <!-- jetlagged a -->
+    <string name="label_back">Back</string>
+    <string name="jetlagged_app_heading">JetLagged</string>
+    <string name="average_time_in_bed_heading">AVG. TIME IN BED</string>
+    <string name="average_sleep_time_heading">AVG. SLEEP TIME</string>
+    <string name="not_implemented">Not implemented yet</string>
+    <string name="placeholder_text_ave_time">8h2min</string>
+    <string name="placeholder_text_ave_time_2">7h15min</string>
+    <string name="sleep_type_awake">Awake</string>
+    <string name="sleep_type_rem">REM</string>
+    <string name="sleep_type_light">Light</string>
+    <string name="sleep_type_deep">Deep</string>
+    <string name="sleep_tab_day_heading">Day</string>
+    <string name="sleep_tab_week_heading">Week</string>
+    <string name="sleep_tab_month_heading">Month</string>
+    <string name="sleep_tab_six_months_heading">6M</string>
+    <string name="sleep_tab_one_year_heading">1Y</string>
+    <!-- jetlagged z -->
+
+</resources>

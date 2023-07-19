@@ -1,5 +1,6 @@
-
+println("∆∆∆∆[build.gradle.kts]")
 plugins {
+    println("∆∆∆∆[build.gradle.kts]->plugins")
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
     kotlin("multiplatform").apply(false)
@@ -8,3 +9,5 @@ plugins {
     id("org.jetbrains.compose").apply(false)
 
 }
+println("∆∆∆∆[build.gradle.kts] end")
+println("∆∆∆∆")
