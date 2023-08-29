@@ -22,6 +22,7 @@ pluginManagement {
         val agpVersion = extra["agp.version"] as String
         val composeVersion = extra["compose.version"] as String
         val yunextVersion = extra["com.yunext.version"] as String
+        val sqlDelightVersion = extra["sqlDelightVersion"] as String
         println("∆∆∆∆<<<<<<<<< yunextVersion = $yunextVersion >>>>>>>>>")
 
 
@@ -36,6 +37,7 @@ pluginManagement {
         id("org.jetbrains.compose").version(composeVersion)
 
         kotlin("plugin.serialization") version(kotlinVersion)
+        id("com.squareup.sqldelight") version(sqlDelightVersion)
     }
 }
 
@@ -50,3 +52,5 @@ dependencyResolutionManagement {
 }
 println("∆∆∆∆[settings.gradle.kts] end")
 println("∆∆∆∆")
+
+

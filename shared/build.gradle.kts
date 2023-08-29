@@ -6,6 +6,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.compose")
     kotlin("plugin.serialization")
+    id("com.squareup.sqldelight")
 }
 
 kotlin {
@@ -37,8 +38,7 @@ kotlin {
         println("∆∆∆∆[:shared/build.gradle.kts]->kotlin->sourceSets")
         val commonMain by getting {
             dependencies {
-                api("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+
                 implementation(compose.ui)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -48,11 +48,9 @@ kotlin {
                 implementation(compose.components.resources)
 
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
-//                implementation(compose.uiTooling) //  ios无法预览
-//                implementation(compose.preview) // ios无法预览
-
-                // implementation("org.jetbrains.compose.constraintlayout:constraintlayout-compose:1.0.1")
-                api("com.google.code.gson:gson:2.8.9")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
+                implementation("com.squareup.sqldelight:runtime:1.5.5")
             }
         }
         val androidMain by getting {
@@ -66,19 +64,13 @@ kotlin {
                 implementation("androidx.appcompat:appcompat:1.6.1")
                 implementation("androidx.lifecycle:lifecycle-process:2.6.1")
                 implementation("androidx.compose.animation:animation-graphics:1.4.3")
-//                implementation("")
                 implementation("androidx.core:core-ktx:1.9.0")
                 implementation("androidx.navigation:navigation-runtime-ktx:2.6.0")
                 implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
-
-                implementation(compose.ui)
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.material3) // 3
-                implementation(compose.preview)
+                implementation("com.squareup.sqldelight:android-driver:1.5.5")
                 implementation(compose.uiTooling)
+                implementation(compose.preview)
             }
         }
         val iosX64Main by getting
@@ -90,20 +82,17 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+            dependencies{
+                implementation("com.squareup.sqldelight:native-driver:1.5.5")
+            }
 
         }
         val desktopMain by getting {
             println("∆∆∆∆[:shared/build.gradle.kts]->kotlin->sourceSets->desktopMain")
             dependencies {
 
-                implementation(compose.ui)
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                implementation(compose.material3) // 3
+                implementation("com.squareup.sqldelight:sqlite-driver:1.5.5")
                 implementation(compose.desktop.common)
-                implementation(compose.preview)
-                implementation(compose.uiTooling)
             }
         }
     }
@@ -134,4 +123,10 @@ android {
 
 println("∆∆∆∆[:shared/build.gradle.kts] end")
 println("∆∆∆∆")
+
+sqldelight {
+    database("AppDatabase") {
+        packageName = "com.yunext.kmm.twins.shared.cache"
+    }
+}
 

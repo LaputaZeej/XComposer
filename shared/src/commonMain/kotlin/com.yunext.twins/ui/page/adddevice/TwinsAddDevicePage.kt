@@ -1,5 +1,6 @@
 package com.yunext.twins.ui.page.adddevice
 
+import LocalPaddingValues
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,8 +49,11 @@ fun TwinsAddDevicePage(
 
     TwinsBackgroundBlock(grey = true)
 
-    Column() {
-        TwinsTitle(modifier = Modifier.background(Color.White),text = "新增设备", leftClick = {
+    Column(
+        modifier =Modifier.fillMaxSize()
+    ) {
+        TwinsTitle(modifier = Modifier.background(Color.White)
+            ,text = "新增设备", leftClick = {
             onLeft()
         })
         Spacer(modifier = Modifier.height(16.dp))

@@ -1,11 +1,9 @@
 package com.yunext.twins.ui.page.home
 
 import androidx.compose.runtime.State
-import com.yunext.twins.base.End
-import com.yunext.twins.base.Processing
-import com.yunext.twins.base.Start
 import com.yunext.twins.base.UiState
 import com.yunext.twins.data.DeviceAndState
+import com.yunext.twins.data.DeviceAndState.Companion.randomList
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -24,29 +22,29 @@ object AppController :
 
     val deviceAndStateListFlow = mutableDeviceAndStateListFlow.asStateFlow()
 
-    private val mutableUiState: MutableStateFlow<UiState<Unit>> = MutableStateFlow(Start(Unit))
+    private val mutableUiState: MutableStateFlow<UiState<Unit,List<DeviceAndState>>> = MutableStateFlow(UiState.Start(Unit))
     val uiState = mutableUiState.asStateFlow()
 
     fun loadDevice() {
         launch {
             try {
                 mutableUiState.update {
-                    Processing(Unit)
+                    UiState.Processing(Unit)
                 }
                 delay(2000)
-                mutableDeviceAndStateListFlow.value =
+                mutableDeviceAndStateListFlow.value = randomList()+
                     DeviceAndState.DEBUG_LIST//deviceRepository.loadDevice()
                 mutableUiState.update {
-                    End.Success(Unit, mutableDeviceAndStateListFlow.value)
+                    UiState.Success(Unit, mutableDeviceAndStateListFlow.value)
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 e.printStackTrace()
                 mutableUiState.update {
-                    End.Fail(Unit, e)
+                    UiState.Fail(Unit, e)
                 }
             } finally {
                 mutableUiState.update {
-                    Start(Unit)
+                    UiState.Start(Unit)
                 }
             }
         }

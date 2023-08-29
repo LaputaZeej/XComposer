@@ -1,5 +1,6 @@
 package com.yunext.twins.ui.page.device
 
+import LocalPaddingValues
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -84,7 +85,8 @@ fun <T> TwinsDevicePage(
     }
     TwinsBackgroundBlock()
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize()
+    ) {
         // 标题
         TwinsTitle(modifier = Modifier
             .background(app_background_70),

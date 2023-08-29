@@ -1,5 +1,4 @@
 package com.yunext.twins.ui.page.adddevice
-import com.yunext.twins.base.Start
 import com.yunext.twins.base.UiState
 import com.yunext.twins.data.DeviceAndState
 import kotlinx.coroutines.CoroutineName
@@ -16,7 +15,7 @@ object AddDeviceController :
 
     val curDeviceAndStateFlow = mutableCurDeviceAndStateFlow.asStateFlow()
 
-    private val mutableUiState: MutableStateFlow<UiState<Unit>> = MutableStateFlow(Start(Unit))
+    private val mutableUiState: MutableStateFlow<UiState<Unit,List<DeviceAndState>>> = MutableStateFlow(UiState.Start(Unit))
     val uiState = mutableUiState.asStateFlow()
 
     fun prepareDeviceDetail(deviceAndState: DeviceAndState){

@@ -1,5 +1,6 @@
 package com.yunext.twins.ui.page.home
 
+import LocalPaddingValues
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -20,6 +23,8 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,17 +37,17 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.yunext.twins.base.End
-import com.yunext.twins.base.Processing
-import com.yunext.twins.base.Start
 import com.yunext.twins.base.TODO
 import com.yunext.twins.base.UiState
+import com.yunext.twins.base.processing
 import com.yunext.twins.data.DeviceAndState
 import com.yunext.twins.ui.compoents.TwinsBackgroundBlock
 import com.yunext.twins.ui.compoents.TwinsEmptyViewForDevice
 import com.yunext.twins.ui.compoents.dialog.CHAlertDialog
 import com.yunext.twins.ui.compoents.dialog.CHLoadingDialog
+import com.yunext.twins.ui.compoents.rememberOverscrollFlingBehavior
 import com.yunext.twins.ui.page.TwinsVersion
+import com.yunext.twins.ui.page.debug.NewsDialog
 import com.yunext.twins.ui.theme.app_button_brush
 import com.yunext.twins.ui.theme.app_textColor_999999
 
@@ -52,31 +57,36 @@ import com.yunext.twins.ui.theme.app_textColor_999999
 fun TwinsHomePage(
     modifier: Modifier = Modifier,
     list: List<DeviceAndState>,
-    uiState: UiState<Unit>,
+    uiState: UiState<*, *>,
     onRefresh: () -> Unit,
     onDeviceSelected: (DeviceAndState) -> Unit,
     onActionAdd: () -> Unit,
 ) {
     TwinsBackgroundBlock()
 
-    val refreshing =
-        when (uiState) {
-            is End.Fail -> false
-            is End.Success<Unit, *> -> false
-            is Processing -> true
-            is Start -> false
-        }
+    val refreshing = uiState.processing()
 
+    SideEffect {
+        println("refreshing = $refreshing")
+    }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = refreshing, onRefresh = { onRefresh() })
-
+//    val scrollState = rememberScrollState()
     Box(
         modifier = modifier
             .fillMaxSize()
+            .padding(LocalPaddingValues.current)
             .pullRefresh(pullRefreshState)
+//            .verticalScroll(
+//                scrollState,
+//                flingBehavior = rememberOverscrollFlingBehavior { scrollState })
     ) {
-        TwinsVersion(modifier = Modifier.align(Alignment.TopCenter), "HD孪生设备v1.0.0")
-        Column() {
+        TwinsVersion(modifier = Modifier.align(Alignment.TopCenter), "HD孪生设备v1.0.0 $refreshing")
+
+        Column(
+
+
+        ) {
             Spacer(modifier = Modifier.height(36.dp))
             @TODO("app name")
             Text(
@@ -191,7 +201,11 @@ fun TwinsHomePage(
         }
         if (show) {
             if (index % 2 == 0) {
-                CHLoadingDialog(dimAmount = 0.1f) {
+//                CHLoadingDialog(dimAmount = 0.1f) {
+//                    show = false
+//                }
+
+                NewsDialog() {
                     show = false
                 }
             } else {
@@ -203,7 +217,6 @@ fun TwinsHomePage(
 
 
         }
-
 
 
     }

@@ -3,9 +3,6 @@ package com.yunext.twins.ui
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yunext.twins.base.End
-import com.yunext.twins.base.Processing
-import com.yunext.twins.base.Start
 import com.yunext.twins.base.UiState
 
 import com.yunext.twins.data.DeviceAndState
@@ -32,7 +29,8 @@ class MainViewModel  constructor(
 
     val curDeviceAndStateFlow = _curDeviceAndStateFlow.asStateFlow()
 
-    private val _uiState:MutableStateFlow<UiState<Unit>> = MutableStateFlow(Start(Unit))
+    private val _uiState:MutableStateFlow<UiState<Unit,List<DeviceAndState>>> =
+        MutableStateFlow(UiState.Start(Unit))
     val uiState = _uiState.asStateFlow()
 
     var a: Int = 10
@@ -42,20 +40,21 @@ class MainViewModel  constructor(
         viewModelScope.launch {
             try {
                 _uiState.update {
-                    Processing(Unit)
+                    UiState.Processing(Unit)
                 }
 //                _deviceAndStateListFlow.value = deviceRepository.loadDevice()
                 _uiState.update {
-                    End.Success(Unit,_deviceAndStateListFlow.value)
+                    UiState.Success(Unit,_deviceAndStateListFlow.value)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 _uiState.update {
-                    End.Fail(Unit,e)
+                    UiState.Fail(Unit,e)
+//                    End.Fail(Unit,e)
                 }
             } finally {
                 _uiState.update {
-                    Start(Unit)
+                    UiState.Start(Unit)
                 }
             }
         }

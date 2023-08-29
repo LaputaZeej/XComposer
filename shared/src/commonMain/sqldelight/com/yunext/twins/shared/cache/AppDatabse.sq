@@ -1,0 +1,18 @@
+CREATE TABLE News (
+    id INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    summary TEXT,
+    date TEXT NOT NULL,
+    imageUrl TEXT
+);
+
+insertNews:
+INSERT INTO News(id, title, summary, date, imageUrl)
+VALUES(?, ?, ?, ?, ?);
+
+removeAllNews:
+DELETE FROM News;
+
+selectAllNewsInfo:
+SELECT News.*
+FROM News;

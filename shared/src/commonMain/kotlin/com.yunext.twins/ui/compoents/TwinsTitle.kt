@@ -1,5 +1,6 @@
 package com.yunext.twins.ui.compoents
 
+import LocalPaddingValues
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -52,7 +53,8 @@ fun TwinsTitle(
     rightClick: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier.fillMaxWidth().height(TwinsTitleDefaults.height),
+        modifier = modifier.fillMaxWidth().padding(LocalPaddingValues.current)
+            .height(TwinsTitleDefaults.height),
         verticalAlignment = Alignment.CenterVertically
     ) {
         // left
@@ -169,7 +171,7 @@ fun TwinsEmptyViewForDevice() {
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun TwinsDeviceStatus(modifier: Modifier = Modifier,deviceStatus: DeviceStatus) {
+fun TwinsDeviceStatus(modifier: Modifier = Modifier, deviceStatus: DeviceStatus) {
     when (deviceStatus) {
         DeviceStatus.GPRSOffLine -> {
             Image(
@@ -203,8 +205,8 @@ fun TwinsDeviceStatus(modifier: Modifier = Modifier,deviceStatus: DeviceStatus) 
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun TwinsLabelText(modifier: Modifier = Modifier,text: String) {
-    Box( modifier = modifier.widthIn(min=60.dp,max=60.dp)) {
+fun TwinsLabelText(modifier: Modifier = Modifier, text: String) {
+    Box(modifier = modifier.widthIn(min = 60.dp, max = 60.dp)) {
         Image(
             painter = painterResource("icon_twins_label_bg.png"),//id = R.mipmap.icon_twins_label_bg),
             contentDescription = "bg",
