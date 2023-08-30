@@ -5,6 +5,20 @@ sealed interface AppDestination {
     //val screen: @Composable () -> Unit  // 实际中有很多参数要传递 所以移动到XNavHost中
 }
 
+fun AppDestination.isEmpty() = this == Empty
+fun AppDestination.isRoot() = this == Empty || this == HomeDestination
+fun AppDestination.back():AppDestination{
+    return when(this){
+        AddDeviceDestination -> HomeDestination
+        BleDestination -> DeviceDestination
+        DeviceDestination -> HomeDestination
+        Empty -> Empty
+        HomeDestination -> Empty
+        LogDestination -> DeviceDestination
+        SettingDestination -> DeviceDestination
+    }
+}
+
 val APP_PAGES = listOf(
     Empty,
     HomeDestination,

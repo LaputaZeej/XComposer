@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.yunext.twins.base.Effect
 import com.yunext.twins.base.TODO
 import com.yunext.twins.base.UiState
 import com.yunext.twins.base.processing
@@ -57,14 +58,14 @@ import com.yunext.twins.ui.theme.app_textColor_999999
 fun TwinsHomePage(
     modifier: Modifier = Modifier,
     list: List<DeviceAndState>,
-    uiState: UiState<*, *>,
+    effect: Effect,
     onRefresh: () -> Unit,
     onDeviceSelected: (DeviceAndState) -> Unit,
     onActionAdd: () -> Unit,
 ) {
     TwinsBackgroundBlock()
 
-    val refreshing = uiState.processing()
+    val refreshing = effect.processing
 
     SideEffect {
         println("refreshing = $refreshing")

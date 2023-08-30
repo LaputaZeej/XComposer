@@ -1,10 +1,8 @@
 package com.yunext.twins.ui.page.device
 import com.yunext.twins.base.UiState
 import com.yunext.twins.data.DeviceAndState
-import com.yunext.twins.ui.page.home.AppController
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-object DeviceController :
+object DeviceStateHolder :
     CoroutineScope by CoroutineScope( SupervisorJob() + CoroutineName("DeviceController")) {
     private val mutableDeviceDetailFlow: MutableStateFlow<List<Int>> =
         MutableStateFlow(listOf())

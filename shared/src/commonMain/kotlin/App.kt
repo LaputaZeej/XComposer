@@ -13,20 +13,17 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.yunext.twins.base.UiState
+import com.yunext.twins.base.Effect
 import com.yunext.twins.data.DeviceAndState
 import com.yunext.twins.data.DeviceStatus
 import com.yunext.twins.data.DeviceType
 import com.yunext.twins.data.ItemDefaults
-import com.yunext.twins.module.repository.RootComponent
 import com.yunext.twins.ui.AddDeviceDestination
 import com.yunext.twins.ui.AppDestination
 import com.yunext.twins.ui.BleDestination
@@ -35,19 +32,19 @@ import com.yunext.twins.ui.Empty
 import com.yunext.twins.ui.HomeDestination
 import com.yunext.twins.ui.LogDestination
 import com.yunext.twins.ui.SettingDestination
+import com.yunext.twins.ui.page.PageStateHolder
 import com.yunext.twins.ui.page.adddevice.TwinsAddDevicePage
 import com.yunext.twins.ui.page.configwifi.TwinsConfigWifiPage
-import com.yunext.twins.ui.page.device.DeviceController
+import com.yunext.twins.ui.page.device.DeviceStateHolder
 import com.yunext.twins.ui.page.device.MenuData
 import com.yunext.twins.ui.page.device.TwinsDevicePage
-import com.yunext.twins.ui.page.home.AppController
+import com.yunext.twins.ui.page.home.HomeStateHolder
 import com.yunext.twins.ui.page.home.TwinsHomePage
 import com.yunext.twins.ui.page.logger.TwinsLoggerPage
 import com.yunext.twins.ui.page.setting.TwinsSettingPage
 import com.yunext.twins.ui.theme.CTwinsTheme
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
-import kotlin.random.Random
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -81,48 +78,28 @@ val LocalPaddingValues = compositionLocalOf { PaddingValues() }
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun App(paddingValues: PaddingValues = PaddingValues()) {
-    CompositionLocalProvider(  LocalPaddingValues provides paddingValues){
+    CompositionLocalProvider(LocalPaddingValues provides paddingValues) {
         CTwinsTheme {
             // A surface container using the 'background' color from the theme
             Surface(
                 modifier = Modifier.fillMaxSize(),
                 color = androidx.compose.material3.MaterialTheme.colorScheme.background
             ) {
-                var curScreen: AppDestination by remember { mutableStateOf(HomeDestination) }
+                val curScreen: AppDestination by PageStateHolder.state.collectAsState()
 //            val list by rememberDeviceAndStateList()
-                val list by AppController.deviceAndStateListFlow.collectAsState()
-                val uiState: UiState<Unit, List<DeviceAndState>> by AppController.uiState.collectAsState()
-                val kvList: List<Int> by DeviceController.deviceDetailFlow.collectAsState()
+                val list by HomeStateHolder.state.collectAsState(listOf())
+                val effect: Effect by HomeStateHolder.effect.collectAsState(Effect.Idle)
+                val kvList: List<Int> by DeviceStateHolder.deviceDetailFlow.collectAsState()
                 val curDevice: DeviceAndState by remember {
                     mutableStateOf(DeviceAndState.DEBUG_ITEM)
-                }
-                val loading by derivedStateOf {
-                    when (val tmp = uiState) {
-                        is UiState.Fail -> {
-                            tmp.error
-                            false
-                        }
-
-                        is UiState.Processing -> {
-                            val progress = tmp.progress
-                            val max = tmp.max
-                            true
-                        }
-
-                        is UiState.Start -> false
-                        is UiState.Success -> {
-                            tmp.resp
-                            false
-                        }
-                    }
                 }
                 when (curScreen) {
                     AddDeviceDestination -> TwinsAddDevicePage(
                         onLeft = {
-                            curScreen = HomeDestination
+                            PageStateHolder.back()
                         },
                         onDeviceCommit = { deviceName: String, deviceType: DeviceType, deviceCommunicationId: String, deviceModel: String ->
-                            AppController.addDevice(
+                            HomeStateHolder.addDevice(
                                 DeviceAndState(
                                     deviceName,
                                     communicationId = deviceCommunicationId + deviceType,
@@ -130,27 +107,32 @@ fun App(paddingValues: PaddingValues = PaddingValues()) {
                                     status = DeviceStatus.random()
                                 )
                             )
-                            curScreen = HomeDestination
-
+                            PageStateHolder.back()
                         })
 
                     BleDestination -> TwinsConfigWifiPage(onLeft = {
-                        curScreen = DeviceDestination
+                        PageStateHolder.back()
                     })
 
                     DeviceDestination -> TwinsDevicePage(onLeft = {
-                        curScreen = HomeDestination
+                        PageStateHolder.back()
                     }, onRight = {
 
                     }, onTabSelected = {
-                        DeviceController.detail(it)
+                        DeviceStateHolder.detail(it)
                     }, list = kvList, device = curDevice, onMenuClick = {
                         when (it) {
-                            MenuData.ConfigWiFi -> curScreen = BleDestination
+                            MenuData.ConfigWiFi -> {
+                                PageStateHolder.skip(BleDestination)
+                            }
 
-                            MenuData.Setting -> curScreen = SettingDestination
+                            MenuData.Setting -> {
+                                PageStateHolder.skip(SettingDestination)
+                            }
 
-                            MenuData.Logger -> curScreen = LogDestination
+                            MenuData.Logger -> {
+                                PageStateHolder.skip(LogDestination)
+                            }
 
                             MenuData.UpdateTsl -> {
 
@@ -162,37 +144,44 @@ fun App(paddingValues: PaddingValues = PaddingValues()) {
                         TwinsHomePage(
                             modifier = Modifier,
                             list = list,
-                            uiState = uiState,
+                            effect = effect,
                             onDeviceSelected = { device ->
-                                DeviceController.prepareDeviceDetail(device)
-                                curScreen = DeviceDestination
+                                DeviceStateHolder.prepareDeviceDetail(device)
+                                PageStateHolder.skip(DeviceDestination)
                             },
                             onRefresh = {
-                                AppController.loadDevice()
+                                HomeStateHolder.listDevice()
                             },
                             onActionAdd = {
-                                curScreen = AddDeviceDestination
+                                PageStateHolder.skip(AddDeviceDestination)
                             })
                     }
 
                     LogDestination -> {
-                        TwinsLoggerPage(onLeft = { curScreen = DeviceDestination })
+                        TwinsLoggerPage(onLeft = {
+                            PageStateHolder.skip(DeviceDestination)
+                        })
                     }
 
                     SettingDestination -> {
                         TwinsSettingPage(onLeft = {
-                            curScreen = DeviceDestination
+                            PageStateHolder.skip(DeviceDestination)
                         })
                     }
                 }
 
                 LaunchedEffect(Unit) {
-                    AppController.loadDevice()
+                    HomeStateHolder.listDevice()
                 }
+
+
             }
         }
     }
 }
 
 expect fun getPlatformName(): String
+
+
+
 
