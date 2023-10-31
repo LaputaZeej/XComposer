@@ -7,9 +7,12 @@ import com.yunext.twins.data.DeviceAndState
 import com.yunext.twins.data.DeviceAndState.Companion.randomList
 import kotlinx.coroutines.delay
 
+@Deprecated("delete")
 expect fun rememberDeviceAndStateList(): State<List<DeviceAndState>>
 
-object HomeStateHolder : AbstractStateHolder<List<DeviceAndState>, UiState<Unit, List<DeviceAndState>>>(listOf()) {
+@Deprecated("delete", ReplaceWith("HomeStore"))
+object HomeStateHolder :
+    AbstractStateHolder<List<DeviceAndState>, UiState<Unit, List<DeviceAndState>>>(listOf()) {
     /**
      * 设备列表
      */

@@ -58,6 +58,7 @@ fun TwinsBackgroundBlock(
     painter: Painter = painterResource("icon_twins_body_bg.png"),//icon_twins_body_bg.png
     grey: Boolean = false,
 ) {
+    Debug("TwinsBackgroundBlock")
     if (grey) {
         Spacer(
             modifier = Modifier

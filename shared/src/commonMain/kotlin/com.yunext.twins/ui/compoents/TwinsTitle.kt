@@ -144,6 +144,7 @@ fun TwinsEmptyView() {
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun TwinsEmptyViewForDevice() {
+    Debug("TwinsHomePage-内容-设备列表-空")
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yunext.twins.ui.compoents.China
+import com.yunext.twins.ui.compoents.Debug
 import com.yunext.twins.ui.compoents.DividerBlock
 import com.yunext.twins.ui.compoents.clickableX
 import com.yunext.twins.ui.theme.app_textColor_333333
@@ -51,6 +52,7 @@ fun CHAlertDialog(
     dimAmount: Float = .5f,
     onDismissRequest: () -> Unit,
 ) {
+    Debug("TwinsHomePage-内容-弹窗2")
     CHDialog(properties, dimAmount = dimAmount, onDismissRequest = onDismissRequest) {
         Box(
             Modifier

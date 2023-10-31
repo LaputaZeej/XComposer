@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -22,8 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yunext.twins.data.DeviceAndState
 import com.yunext.twins.data.ItemDefaults
+import com.yunext.twins.ui.compoents.Debug
 import com.yunext.twins.ui.compoents.TwinsDeviceStatus
 import com.yunext.twins.ui.compoents.TwinsLabelText
+import com.yunext.twins.ui.compoents.xplBackground
+import com.yunext.twins.ui.compoents.xplRandomColor
 
 @Composable
 expect fun TwinsDeviceList(
@@ -41,7 +46,7 @@ internal fun TwinsDeviceItemCommon(
     device: DeviceAndState,
     onClick: () -> Unit,
 ) {
-
+    Debug("TwinsHomePage-内容-设备列表-item")
     Text("desktop - DeviceItem", modifier = modifier.padding(16.dp).clickable {
         onClick()
     })
@@ -50,12 +55,18 @@ internal fun TwinsDeviceItemCommon(
         .fillMaxWidth()
         .wrapContentHeight()
         .clip(ItemDefaults.itemShape)
-        .background(Color.White)
+//        .background(Color.White)
+//        .background(xplRandomColor())
+        .xplBackground { xplRandomColor() }
+//        .drawWithContent{
+//            drawRect(xplRandomColor())
+//            drawContent()
+//        }
         .clickable {
             onClick()
         }
         .padding(16.dp)) {
-
+        Debug("TwinsHomePage-内容-设备列表-item-internal-1")
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Text(
                 text = device.name,
@@ -81,6 +92,7 @@ internal fun DeviceCommunicationIdAndModel(
     communicationId: String,
     model: String,
 ) {
+    Debug("TwinsHomePage-内容-设备列表-item-internal-2")
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         TwinsLabelText(text = "通信ID")
         Spacer(modifier = Modifier.width(4.dp))

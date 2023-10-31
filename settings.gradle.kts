@@ -38,6 +38,7 @@ pluginManagement {
 
         kotlin("plugin.serialization") version(kotlinVersion)
         id("com.squareup.sqldelight") version(sqlDelightVersion)
+        id("org.jetbrains.kotlin.jvm") version "1.8.20"
     }
 }
 

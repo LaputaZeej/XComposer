@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.yunext.twins.data.DeviceAndState
 import com.yunext.twins.ui.compoents.CHItemShadowShape
+import com.yunext.twins.ui.compoents.Debug
 
 @Composable
 actual fun TwinsDeviceItem(modifier: Modifier, device: DeviceAndState, onClick: () -> Unit) {
@@ -33,6 +34,7 @@ actual fun TwinsDeviceList(
     list: List<DeviceAndState>,
     onDeviceSelected: (DeviceAndState) -> Unit,
 ) {
+    Debug("TwinsHomePage-内容-设备列表-桌面")
 //    LazyVerticalGrid(
 //        modifier = Modifier.padding(0.dp),
 //        columns = GridCells.Fixed(3),

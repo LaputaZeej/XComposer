@@ -33,6 +33,7 @@ import com.yunext.twins.module.repository.RootComponent
 import com.yunext.twins.module.repository.impl.NewsRepositoryImpl
 import com.yunext.twins.shared.cache.News
 import com.yunext.twins.ui.compoents.China
+import com.yunext.twins.ui.compoents.Debug
 import com.yunext.twins.ui.compoents.dialog.CHDialog
 import com.yunext.twins.util.randomText
 import kotlinx.coroutines.launch
@@ -174,7 +175,7 @@ fun NewsDialog(
     dimAmount: Float = .1f,
     onDismissRequest: () -> Unit = {},
 ) {
-
+    Debug("TwinsHomePage-内容-弹窗1")
     CHDialog(dimAmount = dimAmount, onDismissRequest = onDismissRequest) {
 
 

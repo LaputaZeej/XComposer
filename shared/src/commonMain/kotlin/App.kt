@@ -16,6 +16,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import com.yunext.twins.ui.Empty
 import com.yunext.twins.ui.HomeDestination
 import com.yunext.twins.ui.LogDestination
 import com.yunext.twins.ui.SettingDestination
+import com.yunext.twins.ui.page.ListItemAnimationComponent
 import com.yunext.twins.ui.page.PageStateHolder
 import com.yunext.twins.ui.page.adddevice.TwinsAddDevicePage
 import com.yunext.twins.ui.page.configwifi.TwinsConfigWifiPage
@@ -39,10 +41,12 @@ import com.yunext.twins.ui.page.device.DeviceStateHolder
 import com.yunext.twins.ui.page.device.MenuData
 import com.yunext.twins.ui.page.device.TwinsDevicePage
 import com.yunext.twins.ui.page.home.HomeStateHolder
+import com.yunext.twins.ui.page.home.HomeStore
 import com.yunext.twins.ui.page.home.TwinsHomePage
 import com.yunext.twins.ui.page.logger.TwinsLoggerPage
 import com.yunext.twins.ui.page.setting.TwinsSettingPage
 import com.yunext.twins.ui.theme.CTwinsTheme
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
@@ -75,7 +79,16 @@ fun AppSample() {
  */
 val LocalPaddingValues = compositionLocalOf { PaddingValues() }
 
-@OptIn(ExperimentalResourceApi::class)
+
+@Composable
+fun App1(paddingValues: PaddingValues = PaddingValues()) {
+    CompositionLocalProvider(LocalPaddingValues provides paddingValues) {
+        CTwinsTheme {
+            ListItemAnimationComponent()
+        }
+    }
+}
+
 @Composable
 fun App(paddingValues: PaddingValues = PaddingValues()) {
     CompositionLocalProvider(LocalPaddingValues provides paddingValues) {
@@ -85,10 +98,18 @@ fun App(paddingValues: PaddingValues = PaddingValues()) {
                 modifier = Modifier.fillMaxSize(),
                 color = androidx.compose.material3.MaterialTheme.colorScheme.background
             ) {
+                val coroutineScope = rememberCoroutineScope()
                 val curScreen: AppDestination by PageStateHolder.state.collectAsState()
 //            val list by rememberDeviceAndStateList()
-                val list by HomeStateHolder.state.collectAsState(listOf())
-                val effect: Effect by HomeStateHolder.effect.collectAsState(Effect.Idle)
+
+               // val list by HomeStateHolder.state.collectAsState(listOf())
+               // val effect: Effect by HomeStateHolder.effect.collectAsState(Effect.Idle)
+
+                val state by HomeStore.INSTANCE.state.collectAsState()
+                val list = state.list
+                val effect  = state.effect
+
+
                 val kvList: List<Int> by DeviceStateHolder.deviceDetailFlow.collectAsState()
                 val curDevice: DeviceAndState by remember {
                     mutableStateOf(DeviceAndState.DEBUG_ITEM)
@@ -107,6 +128,12 @@ fun App(paddingValues: PaddingValues = PaddingValues()) {
                                     status = DeviceStatus.random()
                                 )
                             )
+
+                            HomeStore.INSTANCE.onDeviceAdd(
+                                deviceName,
+                                deviceCommunicationId ,deviceType,deviceModel
+                            )
+
                             PageStateHolder.back()
                         })
 
@@ -146,11 +173,14 @@ fun App(paddingValues: PaddingValues = PaddingValues()) {
                             list = list,
                             effect = effect,
                             onDeviceSelected = { device ->
-                                DeviceStateHolder.prepareDeviceDetail(device)
-                                PageStateHolder.skip(DeviceDestination)
+                                coroutineScope.launch {
+                                    DeviceStateHolder.prepareDeviceDetail(device)
+                                    PageStateHolder.skip(DeviceDestination)
+                                }
                             },
                             onRefresh = {
                                 HomeStateHolder.listDevice()
+                                HomeStore.INSTANCE.onDeviceList()
                             },
                             onActionAdd = {
                                 PageStateHolder.skip(AddDeviceDestination)
@@ -172,6 +202,7 @@ fun App(paddingValues: PaddingValues = PaddingValues()) {
 
                 LaunchedEffect(Unit) {
                     HomeStateHolder.listDevice()
+                    HomeStore.INSTANCE.onDeviceList()
                 }
 
 

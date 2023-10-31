@@ -1,5 +1,7 @@
 package com.yunext.twins.data
 
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -12,6 +14,8 @@ import kotlin.random.Random
 
 
 //@Serializable
+@Immutable
+@Stable
 class DeviceAndState(
     val name: String,
     val communicationId: String,
@@ -66,11 +70,21 @@ class DeviceAndState(
 //
 //}
 //@Serializable()
-sealed class DeviceStatus(val type: DeviceType, val state: DeviceState) {
 
+@Immutable
+@Stable
+sealed class DeviceStatus(val type: DeviceType, val state: DeviceState) {
+    @Immutable
+    @Stable
     object WiFiOnLine : DeviceStatus(DeviceType.WIFI, DeviceState.ONLINE)
+    @Immutable
+    @Stable
     object WiFiOffLine : DeviceStatus(DeviceType.WIFI, DeviceState.OFFLINE)
+    @Immutable
+    @Stable
     object GPRSOnLine : DeviceStatus(DeviceType.GPRS, DeviceState.ONLINE)
+    @Immutable
+    @Stable
     object GPRSOffLine : DeviceStatus(DeviceType.GPRS, DeviceState.OFFLINE)
     companion object {
         internal fun random(): DeviceStatus {
