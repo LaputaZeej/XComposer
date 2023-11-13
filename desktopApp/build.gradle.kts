@@ -14,6 +14,9 @@ kotlin {
         val jvmMain by getting  {
             dependencies {
                 implementation(compose.desktop.currentOs)
+                // <!-- https://mvnrepository.com/artifact/org.bouncycastle/bcpkix-jdk15on -->
+
+                implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
                 implementation(project(":shared"))
             }
         }

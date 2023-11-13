@@ -25,6 +25,11 @@ kotlin {
                 implementation(compose.preview)
                 implementation(compose.ui)
 
+                implementation ("androidx.legacy:legacy-support-v4:1.0.0")
+                implementation("androidx.appcompat:appcompat:1.6.1")
+                implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.1")
+                implementation("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
+
                 implementation("androidx.activity:activity-compose:1.7.2")
                 implementation("androidx.appcompat:appcompat:1.6.1")
                 implementation("androidx.core:core-ktx:1.10.1")
@@ -71,7 +76,24 @@ android {
 //        }
 //    }
 
+
+
 }
+
+//configurations.all {
+//    resolutionStrategy {
+//        eachDependency {
+//
+//
+//            // Force all of the primary support libraries to use the same version.
+//            if (details.requested.group == "com.android.support") {
+//                if (!requested.name.startsWith("multidex")) {
+//                    details.useVersion "25.3.1"
+//                }
+//            }
+//        }
+//    }
+
 
 //dependencies {
 //    implementation(project(":shared"))

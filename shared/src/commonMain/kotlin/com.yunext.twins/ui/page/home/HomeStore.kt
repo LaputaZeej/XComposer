@@ -9,6 +9,7 @@ import com.yunext.twins.base.mvi.MVIStore
 import com.yunext.twins.data.DeviceAndState
 import com.yunext.twins.data.DeviceStatus
 import com.yunext.twins.data.DeviceType
+import com.yunext.twins.module.mqtt.core.mqttClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -144,6 +145,7 @@ class HomeStore(middleware: HomeMiddleware = HomeMiddleware()) : MVIStore<HomeSt
 
     fun onDeviceList() {
         dispatch(HomeAction.Async.StartListDevice)
+        testMqtt()
     }
 
     fun onDeviceAdd(
@@ -160,6 +162,11 @@ class HomeStore(middleware: HomeMiddleware = HomeMiddleware()) : MVIStore<HomeSt
                 deviceModel = deviceModel
             )
         )
+
+    }
+
+    fun testMqtt(){
+        mqttClient.init()
     }
 
     companion object {

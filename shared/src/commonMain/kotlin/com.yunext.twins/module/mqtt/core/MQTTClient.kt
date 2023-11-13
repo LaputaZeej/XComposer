@@ -3,7 +3,7 @@ package com.yunext.twins.module.mqtt.core
 import com.yunext.twins.module.mqtt.data.MQTTParam
 
 
-interface MQTTClient {
+expect interface MQTTClient {
 
     val clientId:String
 

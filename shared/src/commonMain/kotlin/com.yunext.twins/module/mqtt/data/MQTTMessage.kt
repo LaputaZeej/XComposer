@@ -9,5 +9,5 @@ class MQTTMessage(
     val qos: Int,
     val messageId: Int,
     val dup: Boolean,
-    val mutable: Boolean,
+    val mutable: Boolean = true,
 )

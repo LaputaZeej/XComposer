@@ -61,7 +61,6 @@ kotlin {
                 implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
                 implementation("androidx.navigation:navigation-runtime-ktx:2.5.3")
                 implementation("androidx.navigation:navigation-compose:2.5.3")
-                implementation("androidx.appcompat:appcompat:1.6.1")
                 implementation("androidx.lifecycle:lifecycle-process:2.6.1")
                 implementation("androidx.compose.animation:animation-graphics:1.4.3")
                 implementation("androidx.core:core-ktx:1.9.0")
@@ -71,6 +70,10 @@ kotlin {
                 implementation("com.squareup.sqldelight:android-driver:1.5.5")
                 implementation(compose.uiTooling)
                 implementation(compose.preview)
+                implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.1")
+                implementation("org.eclipse.paho:org.eclipse.paho.android.service:1.1.1")
+
+
             }
         }
         val iosX64Main by getting
@@ -92,6 +95,9 @@ kotlin {
             dependencies {
 
                 implementation("com.squareup.sqldelight:sqlite-driver:1.5.5")
+                // https://github.com/eclipse/paho.mqtt.java
+                implementation("org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5")
+                implementation("org.bouncycastle:bcpkix-jdk15on:1.70")
                 implementation(compose.desktop.common)
             }
         }
